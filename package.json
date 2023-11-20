@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "npm i && npm --prefix ./frontend i && npm --prefix ./backend i",
     "dev": "concurrently -n back,front -c yellow,green -t \"HH:mm:ss\" -p \"{name} {time}\" \"npm run dev-back\" \"npm run dev-front\" ",
     "dev-front": "npm --prefix ./frontend run dev",
     "dev-back": "npm --prefix ./backend run start"
