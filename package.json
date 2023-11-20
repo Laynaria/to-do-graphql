@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently -n back,front -c yellow,green -t \"HH:mm:ss\" -p \"{name} {time}\" \"npm run dev-back\" \"npm run dev-front\" ",
+    "dev-front": "npm --prefix ./frontend run dev",
+    "dev-back": "npm --prefix ./backend run start"
   },
   "author": "",
   "license": "ISC",
