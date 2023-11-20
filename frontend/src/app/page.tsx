@@ -1,9 +1,8 @@
 "use client";
-import Image from "next/image";
 import styles from "./page.module.css";
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const GET_ALL_TODO = gql`
   query Query {
@@ -26,7 +25,11 @@ export default function Home() {
 
   const { loading, error } = useQuery(GET_ALL_TODO, {
     onCompleted: (data: any) => {
-      setToDo(data.getAllToDo);
+      setToDo(
+        data.getAllToDo.map((todo: toDoType) => {
+          return { ...todo, isEdit: false };
+        })
+      );
     },
   });
 
@@ -46,7 +49,6 @@ export default function Home() {
   const handleClick = (id: string) => {
     const newToDo: toDoType[] = toDo.map((currentToDo: toDoType, index) => {
       if (index === parseInt(id, 10) - 1) {
-        console.log(currentToDo);
         return { ...currentToDo, isDone: !currentToDo.isDone };
       }
       return currentToDo;
@@ -62,17 +64,29 @@ export default function Home() {
     <>
       <div className={styles.description}>
         <form className={styles.grid}>
-          {toDo?.map((todo: any) => (
-            <input
-              key={todo.id}
-              value={todo.name}
-              className={
-                todo.isDone ? `${styles.checked} ${styles.card}` : styles.card
-              }
-              onChange={(e) => handleChange(e, todo.id)}
-              onClick={() => handleClick(todo.id)}
-            />
-          ))}
+          {toDo?.map((todo: any) =>
+            todo.isEdit ? (
+              <input
+                type="text"
+                key={todo.id}
+                value={todo.name}
+                className={
+                  todo.isDone ? `${styles.checked} ${styles.card}` : styles.card
+                }
+                onChange={(e) => handleChange(e, todo.id)}
+              />
+            ) : (
+              <label
+                key={todo.id}
+                className={
+                  todo.isDone ? `${styles.checked} ${styles.card}` : styles.card
+                }
+              >
+                {todo.name}
+                <input type="checkbox" onClick={() => handleClick(todo.id)} />
+              </label>
+            )
+          )}
         </form>
       </div>
     </>

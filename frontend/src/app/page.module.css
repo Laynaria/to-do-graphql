@@ -2,6 +2,10 @@
   text-decoration: line-through;
 }
 
+.card input[type="checkbox"] {
+  display: none;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;
@@ -31,7 +35,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(25%, auto));
+  grid-template-rows: repeat(4, minmax(25%, auto));
   max-width: 100%;
   width: var(--max-width);
 }
